@@ -56,9 +56,8 @@ class Controller implements KeyListener {
 	    f.add(topPanel);
 		vlc = new VlcPanel(topPanel, strIntroVideo);
 		f.add(vlc);
-		//f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		//f.setUndecorated(true);
-		f.setSize(500, 500);
+		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		f.setUndecorated(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 		f.addKeyListener(this);
