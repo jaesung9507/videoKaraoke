@@ -19,7 +19,8 @@
 setting.ini를 열어 아래와 같이 상단바의 배경색과 노래방 이름을 설정합니다.  
 배경색은 10진수 RGB 코드로 작성합니다.
   
->KaraokeName=재성노래방  
+>introVideo=./intro.mp4  
+KaraokeName=재성노래방  
 TopBK_R=0  
 TopBK_G=0  
 TopBK_B=0  
@@ -30,11 +31,11 @@ TopBK_B=0
 >&#35;노래방 번호  
 &#35;제목  
 &#35;가수  
-&#35;동영상 파일 경로 또는 Youtube URL  <br>
+&#35;동영상 파일 경로 또는 Youtube URL  
 430  
 비처럼 음악처럼  
 김현식  
-./song/430.mp4  <br>
+./song/430.mp4  
 49920  
 여행  
 볼빨간 사춘기  
@@ -46,6 +47,7 @@ https://www.youtube.com/watch?v=z-c-q88xrb0
 | 동작 | 키 |
 |--------|-------|
 | 번호입력 | 0-9 |
+| 번호삭제 | Backspace |
 | 시작 | Enter |
 | 취소 | Esc |
 | 예약 | Ctrl |
