@@ -53,6 +53,9 @@ https://www.youtube.com/watch?v=z-c-q88xrb0
 | 예약 | Ctrl |
 | 우선예약 | Shift |
 
+## 배포
+[videoKaraoke-0.0.1-dist.zip](https://www.mediafire.com/file/b1kmk8jkm1fjz90/videoKaraoke-0.0.1-dist.zip/file)
+
 ## 라이센스
 GPLv3(GNU General Public License v3)  
   
