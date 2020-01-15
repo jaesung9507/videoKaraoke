@@ -132,6 +132,15 @@ public class RaspKaraoke {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new Controller();
+		if(args.length > 0) {
+			if(args[0].equals("-ver"))
+				System.out.println("VideoKaraoke version 0.0.1");
+			else
+				System.out.println("Unrecognized option: " + args[0]);
+			return;
+		}
+		else {
+			new Controller();
+		}
 	}
 }
