@@ -128,7 +128,7 @@ class Controller implements KeyListener {
 	}
 }
 
-public class RaspKaraoke {
+public class VideoKaraoke {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
