@@ -40,6 +40,7 @@ public class VlcPanel extends JPanel {
     private Song playSong = null;
     private TopPanel topPanel;
     private int nMsgType = 0;
+    private int nTempo = 0;
     
     public VlcPanel(TopPanel topPanel, String strIntroPath) {
     	this.topPanel = topPanel;
@@ -96,6 +97,47 @@ public class VlcPanel extends JPanel {
 		timer.schedule(task, 0, 3000);
     }
     
+    public void tempoUp() {
+    	if(playSong != null) {
+    		if(++nTempo > 6)
+    			nTempo = 6;
+    		float fTempo = 1.0f + nTempo * 0.1f;
+    		player.setRate(fTempo);
+    		printTempo();
+    	}
+    }
+    
+    public void tempoDown() {
+    	if(playSong != null) {
+    		if(--nTempo < -6)
+    			nTempo = -6;
+    		float fTempo = 1.0f + nTempo * 0.1f;
+    		player.setRate(fTempo);
+    		printTempo();
+    	}
+    }
+    
+    private void printTempo() {
+    	String strMsg = "템포 | ";
+    	switch(nTempo) {
+    	case -6: strMsg += "- ◀◁◁◁◁◁□▷▷▷▷▷▷ +"; break;
+    	case -5: strMsg += "- ◁◀◁◁◁◁□▷▷▷▷▷▷ +"; break;
+    	case -4: strMsg += "- ◁◁◀◁◁◁□▷▷▷▷▷▷ +"; break;
+    	case -3: strMsg += "- ◁◁◁◀◁◁□▷▷▷▷▷▷ +"; break;
+    	case -2: strMsg += "- ◁◁◁◁◀◁□▷▷▷▷▷▷ +"; break;
+    	case -1: strMsg += "- ◁◁◁◁◁◀□▷▷▷▷▷▷ +"; break;
+    	case 0: strMsg += "- ◁◁◁◁◁◁■▷▷▷▷▷▷ +"; break;
+    	case 1: strMsg += "- ◁◁◁◁◁◁□▶▷▷▷▷▷ +"; break;
+    	case 2: strMsg += "- ◁◁◁◁◁◁□▷▶▷▷▷▷ +"; break;
+    	case 3: strMsg += "- ◁◁◁◁◁◁□▷▷▶▷▷▷ +"; break;
+    	case 4: strMsg += "- ◁◁◁◁◁◁□▷▷▷▶▷▷ +"; break;
+    	case 5: strMsg += "- ◁◁◁◁◁◁□▷▷▷▷▶▷ +"; break;
+    	case 6: strMsg += "- ◁◁◁◁◁◁□▷▷▷▷▷▶ +"; break;
+    	default: return;
+    	}
+    	topPanel.setTempMsg(strMsg);
+    }
+    
     public int getSongCount() {
     	return listSong.size();
     }
@@ -140,7 +182,7 @@ public class VlcPanel extends JPanel {
     
     public void cancelSong() {
     	if(playSong != null)
-    		player.setPosition(100);
+    		player.stop();
     }
     
     private void runVideo() {
@@ -155,7 +197,6 @@ public class VlcPanel extends JPanel {
     }
     
     private void endVideo() {
-    	player.stop();
     	player.release();
         component.release();
         remove(component);
@@ -165,9 +206,8 @@ public class VlcPanel extends JPanel {
         add(component, BorderLayout.CENTER);
         revalidate();
         player.addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
-            @Override
-            public void finished(MediaPlayer mediaPlayer) {
-            	if(playSong.getFilePath().substring(0,4).equals("http")) {
+        	private void run(MediaPlayer mediaPlayer) {
+        		if(playSong.getFilePath().substring(0,4).equals("http")) {
             		playSong.setFilePath("play" + playSong.getFilePath().substring(4));
             	}
             	else if(playSong != null) {
@@ -178,7 +218,11 @@ public class VlcPanel extends JPanel {
             	else {
             		mediaPlayer.setRepeat(true);
             	}
-            }
+        	}
+            @Override
+            public void finished(MediaPlayer mediaPlayer) { run(mediaPlayer); }
+            @Override
+            public void stopped(MediaPlayer mediaPlayer) { run(mediaPlayer); }
         });
         runVideo();
     }

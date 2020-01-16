@@ -35,6 +35,7 @@ public class TopPanel extends JPanel {
 	private String strInputNum = "";
 	private String strSongMsg = "";
 	private String strTempMsg = "";
+	private int nTimerCnt = 0;
 	
 	public TopPanel(int nTopR, int nTopG, int nTopB, String strKaraokeName) {
 		setBackground(new Color(nTopR, nTopG, nTopB, 255));
@@ -76,16 +77,21 @@ public class TopPanel extends JPanel {
 	}
 	
 	public void setTempMsg(String str) {
-		strTempMsg = str;
 		Timer timer = new Timer();
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
-				strTempMsg = "";
-				repaint();
+				nTimerCnt--;
+				if(nTimerCnt == 0) {
+					strTempMsg = "";
+					repaint();
+				}
 			}
 		};
 		timer.schedule(task, 3000);
+		nTimerCnt++;
+		
+		strTempMsg = str;
 		repaint();
 	}
 	

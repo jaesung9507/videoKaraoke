@@ -108,6 +108,14 @@ class Controller implements KeyListener {
 				topPanel.setTempMsg(topPanel.getInputNumber() + " | 우선예약되었습니다.");
 			topPanel.inputNumber((char)KeyEvent.VK_CLEAR);
 			break;
+		// 템포 느리게
+		case KeyEvent.VK_F4:
+			vlc.tempoDown();
+			break;
+		// 템포 빠르게
+		case KeyEvent.VK_F5:
+			vlc.tempoUp();
+			break;
 		case KeyEvent.VK_0:
 		case KeyEvent.VK_1:
 		case KeyEvent.VK_2:
@@ -128,7 +136,7 @@ class Controller implements KeyListener {
 	}
 }
 
-public class RaspKaraoke {
+public class VideoKaraoke {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
