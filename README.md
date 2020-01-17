@@ -49,11 +49,17 @@ https://www.youtube.com/watch?v=z-c-q88xrb0
 | 번호입력 | 0-9 |
 | 번호삭제 | Backspace |
 | 시작 | Enter |
+| 일시정지 | Space |
 | 취소 | Esc |
 | 예약 | Ctrl |
 | 우선예약 | Shift |
+| 반주 ▲ | F2 |
+| 반주 ▼ | F3 |
+| 템포 ▲ | F4 |
+| 템포 ▼ | F5 |
 
 ## 배포
+[videoKaraoke-0.0.2-dist.zip](http://www.mediafire.com/file/9qv14qk1lg2wx4y/videoKaraoke-0.0.2-dist.zip/file)    
 [videoKaraoke-0.0.1-dist.zip](https://www.mediafire.com/file/b1kmk8jkm1fjz90/videoKaraoke-0.0.1-dist.zip/file)
 
 ## 라이센스

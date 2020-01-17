@@ -108,6 +108,14 @@ class Controller implements KeyListener {
 				topPanel.setTempMsg(topPanel.getInputNumber() + " | 우선예약되었습니다.");
 			topPanel.inputNumber((char)KeyEvent.VK_CLEAR);
 			break;
+		// 반주 작게
+		case KeyEvent.VK_F2:
+			vlc.volumeDown();
+			break;
+		// 반주 크게
+		case KeyEvent.VK_F3:
+			vlc.volumeUp();
+			break;
 		// 템포 느리게
 		case KeyEvent.VK_F4:
 			vlc.tempoDown();
@@ -142,7 +150,7 @@ public class VideoKaraoke {
 		// TODO Auto-generated method stub
 		if(args.length > 0) {
 			if(args[0].equals("-ver"))
-				System.out.println("VideoKaraoke version 0.0.1");
+				System.out.println("VideoKaraoke version 0.0.2");
 			else
 				System.out.println("Unrecognized option: " + args[0]);
 			return;

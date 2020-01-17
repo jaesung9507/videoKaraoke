@@ -97,6 +97,34 @@ public class VlcPanel extends JPanel {
 		timer.schedule(task, 0, 3000);
     }
     
+    public void volumeUp() {
+    	int nVolume = player.getVolume() + 1;
+    	if(nVolume > 100)
+    		nVolume = 100;
+    	player.setVolume(nVolume);
+    	printVolume();
+    }
+    
+    public void volumeDown() {
+    	int nVolume = player.getVolume() - 1;
+    	if(nVolume < 0)
+    		nVolume = 0;
+    	player.setVolume(nVolume);
+    	printVolume();
+    }
+    
+    private void printVolume() {
+    	int nVolume = player.getVolume();
+    	String strMsg = "반주음량 | "+ nVolume +" -[";
+    	int nProgress = nVolume / 5;
+    	for(int i=0;i<nProgress;i++)
+    		strMsg += "=";
+    	for(int i=20;i>nProgress;i--)
+    		strMsg += "-";
+    	strMsg += "]+";
+    	topPanel.setTempMsg(strMsg);
+    }
+    
     public void tempoUp() {
     	if(playSong != null) {
     		if(++nTempo > 6)
@@ -182,7 +210,8 @@ public class VlcPanel extends JPanel {
     
     public void cancelSong() {
     	if(playSong != null)
-    		player.stop();
+//    		player.stop();
+    		player.setPosition(100);
     }
     
     private void runVideo() {
