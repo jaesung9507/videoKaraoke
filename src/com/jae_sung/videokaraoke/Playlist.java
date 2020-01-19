@@ -33,6 +33,26 @@ public class Playlist {
 		readFile(strFilePath);
 	}
 	
+	@Override
+	public String toString() {
+		return "수록곡 : " + m_listSong.size() + "곡";
+	}
+	
+	public String toArtistString(String strArtist) {
+		String strResult = "문법 오류\nExample : -artist 가수명";
+		if(strArtist != null) {
+			int nCount = 0;
+			for(int i=0; i<m_listSong.size();i++) {
+				if(m_listSong.get(i).getArtist().equals(strArtist))
+					nCount++;
+			}
+			
+			strResult = "가수명 : " + strArtist + "\n수록곡 : " + nCount;
+		}
+		
+		return strResult;
+	}
+	
 	public Song searchSong(int nNum) {
 		Song song = null;
 		if(nNum != -1) {

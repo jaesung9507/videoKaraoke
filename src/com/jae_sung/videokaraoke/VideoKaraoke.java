@@ -49,6 +49,7 @@ class Controller implements KeyListener {
 		catch(Exception e) { e.printStackTrace(); }
 		
 		playlist = new Playlist("./playlist.txt");
+		System.out.println(playlist);
 		JFrame f = new JFrame();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		topPanel = new TopPanel(nTopR, nTopG, nTopB, strKaraokeName);
@@ -151,6 +152,13 @@ public class VideoKaraoke {
 		if(args.length > 0) {
 			if(args[0].equals("-ver"))
 				System.out.println("VideoKaraoke version 0.0.2");
+			else if(args[0].equals("-playlist"))
+				System.out.println(new Playlist("./playlist.txt"));
+			else if(args[0].equals("-artist"))
+				if(args.length > 1)
+					System.out.println(new Playlist("./playlist.txt").toArtistString(args[1]));
+				else
+					System.out.println(new Playlist("./playlist.txt").toArtistString(null));
 			else
 				System.out.println("Unrecognized option: " + args[0]);
 			return;

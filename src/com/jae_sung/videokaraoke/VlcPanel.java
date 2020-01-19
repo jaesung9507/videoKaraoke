@@ -45,9 +45,9 @@ public class VlcPanel extends JPanel {
     public VlcPanel(TopPanel topPanel, String strIntroPath) {
     	this.topPanel = topPanel;
     	this.strIntroPath = strIntroPath;
-        new NativeDiscovery().discover();
+    	new NativeDiscovery().discover();
         component = new EmbeddedMediaPlayerComponent();
-        player = component.getMediaPlayer();        
+        player = component.getMediaPlayer();
 
         setLayout(new BorderLayout());
         setVisible(true);
@@ -209,15 +209,18 @@ public class VlcPanel extends JPanel {
     }
     
     public void cancelSong() {
-    	if(playSong != null)
-//    		player.stop();
-    		player.setPosition(100);
+    	if(playSong != null) {
+    		playSong = null;
+    		endVideo();
+    	}
     }
     
     private void runVideo() {
     	if(playSong != null) {
-    		player.playMedia(playSong.getFilePath());
-    		topPanel.setSongMsg("현재곡 ♬ | " + playSong);
+    		if(player.playMedia(playSong.getFilePath()))
+    			topPanel.setSongMsg("현재곡 ♬ | " + playSong);
+    		else
+    			topPanel.setTempMsg(playSong.getNum() + " | 오류로 시작할 수 없습니다.");
     	}
     	else {
     		player.playMedia(strIntroPath);
@@ -235,23 +238,26 @@ public class VlcPanel extends JPanel {
         add(component, BorderLayout.CENTER);
         revalidate();
         player.addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
-        	private void run(MediaPlayer mediaPlayer) {
-        		if(playSong.getFilePath().substring(0,4).equals("http")) {
-            		playSong.setFilePath("play" + playSong.getFilePath().substring(4));
-            	}
-            	else if(playSong != null) {
-            		if(playSong.getFilePath().substring(0, 4).equals("play"))
-                		playSong.setFilePath("http" + playSong.getFilePath().substring(4));
+        	int nCall = 0;
+            @Override
+            public void finished(MediaPlayer mediaPlayer) {
+            	if(playSong == null) {
+        			mediaPlayer.setRepeat(true);
+        		}
+            	else {
+            		if(playSong.getFilePath().substring(0,4).equals("http")) {
+            			nCall++;
+            			if(nCall <= 1)
+                			return;
+                	}
             		playSong();
             	}
-            	else {
-            		mediaPlayer.setRepeat(true);
-            	}
-        	}
+            }
             @Override
-            public void finished(MediaPlayer mediaPlayer) { run(mediaPlayer); }
-            @Override
-            public void stopped(MediaPlayer mediaPlayer) { run(mediaPlayer); }
+            public void error(MediaPlayer mediaPlayer) {
+            	topPanel.setTempMsg(playSong.getNum() + " | 설정된 경로 또는 URL을 확인하세요.");
+            	cancelSong();
+            }
         });
         runVideo();
     }
