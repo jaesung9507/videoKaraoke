@@ -138,6 +138,11 @@ class Controller implements KeyListener {
 		case KeyEvent.VK_BACK_SPACE:
 			topPanel.inputNumber((char)nKeyCode);
 			break;
+		case KeyEvent.VK_S:
+			if(e.isControlDown()) {
+				playlist.exportHTML();
+				break;
+			}
 		default:
 			System.out.println(nKeyCode);
 			break;
@@ -151,7 +156,7 @@ public class VideoKaraoke {
 		// TODO Auto-generated method stub
 		if(args.length > 0) {
 			if(args[0].equals("-ver"))
-				System.out.println("VideoKaraoke version 0.0.2");
+				System.out.println("VideoKaraoke version 0.0.3");
 			else if(args[0].equals("-playlist"))
 				System.out.println(new Playlist("./playlist.txt"));
 			else if(args[0].equals("-artist"))

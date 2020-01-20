@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -51,6 +52,27 @@ public class Playlist {
 		}
 		
 		return strResult;
+	}
+	
+	public void exportHTML() {
+		String strResult = "<html><head><title>Playlist</title></head><body><table border=\"1\">";
+		strResult += "<tr><th style=\"background-color: #ffff00;\">번호</th><th>제목</th><th>가수</th></tr>";
+		for(int i=0; i<m_listSong.size();i++) {
+			Song song = m_listSong.get(i);
+			strResult += "<tr><td style=\"background-color: #ffff00;\"><b>" + song.getNum() + "</b></td>";
+			strResult += "<td>" + song.getName() + "</td>";
+			strResult += "<td>" + song.getArtist() + "</td></tr>";
+		}
+		strResult += "</table></body></html>";
+		File file = new File("./Playlist.html");
+		try {
+			FileWriter fw = new FileWriter(file);
+			fw.write(strResult);
+			fw.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Song searchSong(int nNum) {

@@ -57,9 +57,19 @@ https://www.youtube.com/watch?v=z-c-q88xrb0
 | 반주 ▼ | F3 |
 | 템포 ▲ | F4 |
 | 템포 ▼ | F5 |
+| Playlist 내보내기 | Ctrl + S |  
+  
+옵션을 넣어 실행하면 아래와 같은 정보를 얻을 수 있습니다.  
+  
+| 옵션 | 결과 | 결과 |
+|--------|-------|-------|
+| -ver | VideoKaraoke version x.x.x | 버전 정보 |
+| -playlist | 수록곡 : 0곡 | 수록곡 수 |
+| -artist singer | 가수명 : singer  수록곡 : 0곡 | 해당 가수 수록곡 수 |
 
 ## 배포
-[videoKaraoke-0.0.2-dist.zip](http://www.mediafire.com/file/9qv14qk1lg2wx4y/videoKaraoke-0.0.2-dist.zip/file)    
+[videoKaraoke-0.0.3-dist.zip](http://www.mediafire.com/file/txlcmd01un2ta28/videoKaraoke-0.0.3-dist.zip/file)  
+[videoKaraoke-0.0.2-dist.zip](http://www.mediafire.com/file/9qv14qk1lg2wx4y/videoKaraoke-0.0.2-dist.zip/file)  
 [videoKaraoke-0.0.1-dist.zip](https://www.mediafire.com/file/b1kmk8jkm1fjz90/videoKaraoke-0.0.1-dist.zip/file)
 
 ## 라이센스
