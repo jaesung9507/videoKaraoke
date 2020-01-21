@@ -61,7 +61,7 @@ https://www.youtube.com/watch?v=z-c-q88xrb0
   
 옵션을 넣어 실행하면 아래와 같은 정보를 얻을 수 있습니다.  
   
-| 옵션 | 결과 | 결과 |
+| 옵션 | 결과 | 설명 |
 |--------|-------|-------|
 | -ver | VideoKaraoke version x.x.x | 버전 정보 |
 | -playlist | 수록곡 : 0곡 | 수록곡 수 |
