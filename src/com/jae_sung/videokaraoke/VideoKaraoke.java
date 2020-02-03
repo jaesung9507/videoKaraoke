@@ -22,14 +22,21 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.swing.JFrame;
 
 class Controller implements KeyListener {
 	Playlist playlist;
 	TopPanel topPanel;
+	MenuPanel menuPanel;
 	VlcPanel vlc;
 	
 	public Controller() {
@@ -54,7 +61,11 @@ class Controller implements KeyListener {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		topPanel = new TopPanel(nTopR, nTopG, nTopB, strKaraokeName);
 	    topPanel.setBounds(0, 0, screenSize.width, screenSize.height / 15);
+	    menuPanel = new MenuPanel(50, 50, 50);
+	    menuPanel.setBounds(screenSize.width / 10, screenSize.height/10, (int)(screenSize.width * 0.8), (int)(screenSize.height * 0.8));
+	    menuPanel.setVisible(false);
 	    f.add(topPanel);
+	    f.add(menuPanel);
 		vlc = new VlcPanel(topPanel, strIntroVideo);
 		f.add(vlc);
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -63,6 +74,22 @@ class Controller implements KeyListener {
 		f.setVisible(true);
 		f.addKeyListener(this);
 		vlc.startVLC();
+	}
+	
+	private void playSound(String FilePath) {
+		try {          
+			File soundFile = new File(FilePath);
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile); 
+			AudioFormat format = audioIn.getFormat();             
+			
+			DataLine.Info info = new DataLine.Info(Clip.class, format);
+			Clip clip = (Clip)AudioSystem.getLine(info);
+			
+			clip.open(audioIn);
+			clip.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -91,7 +118,10 @@ class Controller implements KeyListener {
 			break;
 		// 취소
 		case KeyEvent.VK_ESCAPE:
-			vlc.cancelSong();
+			if(menuPanel.isVisible())
+				menuPanel.setVisible(false);
+			else
+				vlc.cancelSong();
 			break;
 		// 일시정지
 		case KeyEvent.VK_SPACE:
@@ -109,6 +139,16 @@ class Controller implements KeyListener {
 				topPanel.setTempMsg(topPanel.getInputNumber() + " | 우선예약되었습니다.");
 			topPanel.inputNumber((char)KeyEvent.VK_CLEAR);
 			break;
+		// 방향키 이동
+		case KeyEvent.VK_LEFT:
+		case KeyEvent.VK_RIGHT:
+			if(menuPanel.isVisible())
+				menuPanel.arrowKeyInput(nKeyCode);
+			break;
+		// 메뉴
+		case KeyEvent.VK_F1:
+			menuPanel.setVisible(!menuPanel.isVisible());
+			break;
 		// 반주 작게
 		case KeyEvent.VK_F2:
 			vlc.volumeDown();
@@ -124,6 +164,13 @@ class Controller implements KeyListener {
 		// 템포 빠르게
 		case KeyEvent.VK_F5:
 			vlc.tempoUp();
+			break;
+		// 박수
+		case KeyEvent.VK_F6:
+			playSound("./res/clap.wav");
+			break;
+		// 선택
+		case KeyEvent.VK_F7:
 			break;
 		case KeyEvent.VK_0:
 		case KeyEvent.VK_1:
