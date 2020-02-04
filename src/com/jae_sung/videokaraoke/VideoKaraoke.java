@@ -118,10 +118,13 @@ class Controller implements KeyListener {
 			break;
 		// 취소
 		case KeyEvent.VK_ESCAPE:
-			if(menuPanel.isVisible())
+			if(menuPanel.isVisible()) {
+				menuPanel.init();
 				menuPanel.setVisible(false);
-			else
+			}
+			else {
 				vlc.cancelSong();
+			}
 			break;
 		// 일시정지
 		case KeyEvent.VK_SPACE:
@@ -147,6 +150,8 @@ class Controller implements KeyListener {
 			break;
 		// 메뉴
 		case KeyEvent.VK_F1:
+			if(menuPanel.isVisible())
+				menuPanel.init();
 			menuPanel.setVisible(!menuPanel.isVisible());
 			break;
 		// 반주 작게
@@ -171,6 +176,8 @@ class Controller implements KeyListener {
 			break;
 		// 선택
 		case KeyEvent.VK_F7:
+			if(menuPanel.isVisible())
+				menuPanel.selectInput();
 			break;
 		case KeyEvent.VK_0:
 		case KeyEvent.VK_1:
