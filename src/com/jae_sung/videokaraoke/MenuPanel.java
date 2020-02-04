@@ -31,17 +31,20 @@ public class MenuPanel extends JPanel {
 	public final int FOCUS_SEARCH = 0;
 	public final int FOCUS_INFO = 1;
 	public final int MAX_FOCUS = 2;
+	JPanel mainPanel = new JPanel();
 	JLabel searchLabel, infoLabel;
 	private int m_nFocus = FOCUS_SEARCH;
 	
 	public MenuPanel(int nTopR, int nTopG, int nTopB) {
 		setBackground(new Color(nTopR, nTopG, nTopB, 255));
-		searchLabel = new JLabel("곡 검색");
-		infoLabel = new JLabel("정보");
+		mainPanel.setBackground(new Color(nTopR, nTopG, nTopB, 255));
+		searchLabel = new JLabel();
+		infoLabel = new JLabel();
 		searchLabel.setIcon(new ImageIcon("./res/search_focus.jpg"));
 		infoLabel.setIcon(new ImageIcon("./res/info.jpg"));
-		add(searchLabel);
-		add(infoLabel);
+		mainPanel.add(searchLabel);
+		mainPanel.add(infoLabel);
+		add(mainPanel);
 	}
 	
 	public void arrowKeyInput(int nKeyCode) {
