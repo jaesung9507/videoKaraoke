@@ -71,11 +71,6 @@ public class MenuPanel extends JPanel {
 		return m_nSelectedPanel;
 	}
 	
-	public void toggleSearchCategory() {
-		if(m_nSelectedPanel == PANEL_SEARCH)
-			searchPanel.toggleCategory();
-	}
-	
 	public void selectInput() {
 		switch(m_nFocus) {
 		case PANEL_SEARCH:

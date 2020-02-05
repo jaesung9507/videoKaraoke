@@ -182,9 +182,6 @@ class Controller implements KeyListener, FocusListener {
 			if(menuPanel.isVisible())
 				menuPanel.selectInput();
 			break;
-		case KeyEvent.VK_F8:
-			menuPanel.toggleSearchCategory();
-			break;
 		case KeyEvent.VK_0:
 		case KeyEvent.VK_1:
 		case KeyEvent.VK_2:

@@ -113,6 +113,9 @@ public class SearchPanel extends JPanel implements KeyListener {
 			focusMaster.requestFocus();
 			focusMaster.getKeyListeners()[0].keyReleased(e);
 			break;
+		case KeyEvent.VK_F8:
+			toggleCategory();
+			break;
 		default:
 			break;
 		}
