@@ -20,6 +20,8 @@
 package com.jae_sung.videokaraoke;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -33,7 +35,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.swing.JFrame;
 
-class Controller implements KeyListener {
+class Controller implements KeyListener, FocusListener {
 	Playlist playlist;
 	TopPanel topPanel;
 	MenuPanel menuPanel;
@@ -61,7 +63,7 @@ class Controller implements KeyListener {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		topPanel = new TopPanel(nTopR, nTopG, nTopB, strKaraokeName);
 	    topPanel.setBounds(0, 0, screenSize.width, screenSize.height / 15);
-	    menuPanel = new MenuPanel(50, 50, 50);
+	    menuPanel = new MenuPanel(50, 50, 50, f);
 	    menuPanel.setBounds(screenSize.width / 10, screenSize.height/10, (int)(screenSize.width * 0.8), (int)(screenSize.height * 0.8));
 	    menuPanel.setVisible(false);
 	    f.add(topPanel);
@@ -73,6 +75,7 @@ class Controller implements KeyListener {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 		f.addKeyListener(this);
+		f.addFocusListener(this);
 		vlc.startVLC();
 	}
 	
@@ -179,6 +182,9 @@ class Controller implements KeyListener {
 			if(menuPanel.isVisible())
 				menuPanel.selectInput();
 			break;
+		case KeyEvent.VK_F8:
+			menuPanel.toggleSearchCategory();
+			break;
 		case KeyEvent.VK_0:
 		case KeyEvent.VK_1:
 		case KeyEvent.VK_2:
@@ -201,6 +207,18 @@ class Controller implements KeyListener {
 			System.out.println(nKeyCode);
 			break;
 		}
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		if(menuPanel.getSelectedPanel() != menuPanel.PANEL_SEARCH)
+			((JFrame)e.getSource()).requestFocus();
 	}
 }
 

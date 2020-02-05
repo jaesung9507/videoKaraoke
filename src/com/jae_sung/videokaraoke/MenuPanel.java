@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -35,12 +36,13 @@ public class MenuPanel extends JPanel {
 	public final int MAX_FOCUS = PANEL_INFO;
 	
 	CardLayout card = new CardLayout();
+	SearchPanel searchPanel;
 	JLabel searchBtn, infoBtn;
 	
 	private int m_nFocus = PANEL_SEARCH;	// range : 1~MAX_FOCUS
 	private int m_nSelectedPanel = PANEL_MAIN;
 	
-	public MenuPanel(int nTopR, int nTopG, int nTopB) {
+	public MenuPanel(int nTopR, int nTopG, int nTopB, JFrame f) {
 		setLayout(card);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(new Color(nTopR, nTopG, nTopB, 255));
@@ -50,7 +52,7 @@ public class MenuPanel extends JPanel {
 		mainPanel.add(searchBtn);
 		mainPanel.add(infoBtn);
 		
-		SearchPanel searchPanel = new SearchPanel(nTopR, nTopG, nTopB);
+		searchPanel = new SearchPanel(nTopR, nTopG, nTopB, f);
 		InfoPanel infoPanel = new InfoPanel(nTopR, nTopG, nTopB);
 		
 		add(mainPanel, String.valueOf(PANEL_MAIN));
@@ -63,6 +65,15 @@ public class MenuPanel extends JPanel {
 		m_nFocus = PANEL_SEARCH;
 		m_nSelectedPanel = PANEL_MAIN;
 		arrowKeyInput(0x00);
+	}
+	
+	public int getSelectedPanel() {
+		return m_nSelectedPanel;
+	}
+	
+	public void toggleSearchCategory() {
+		if(m_nSelectedPanel == PANEL_SEARCH)
+			searchPanel.toggleCategory();
 	}
 	
 	public void selectInput() {
@@ -111,5 +122,7 @@ public class MenuPanel extends JPanel {
 	private void showPanel() {
 		m_nSelectedPanel = m_nFocus;
 		card.show(this, String.valueOf(m_nFocus));
+		if(m_nFocus == PANEL_SEARCH)
+			searchPanel.giveFocus();
 	}
 }
