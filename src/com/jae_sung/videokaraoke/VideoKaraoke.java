@@ -209,7 +209,6 @@ class Controller implements KeyListener, FocusListener {
 	@Override
 	public void focusGained(FocusEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

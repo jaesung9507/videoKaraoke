@@ -88,6 +88,24 @@ public class Playlist {
 		return song;
 	}
 	
+	public ArrayList<Song> searchTitle(String strKeyword) {
+		ArrayList<Song> listResult = new ArrayList<>();
+		for(int i=0; i < m_listSong.size(); i++){
+			if(m_listSong.get(i).getName().contains(strKeyword))
+				listResult.add(m_listSong.get(i));
+		}
+		return listResult;
+	}
+	
+	public ArrayList<Song> searchArtist(String strKeyword) {
+		ArrayList<Song> listResult = new ArrayList<>();
+		for(int i=0; i < m_listSong.size(); i++){
+			if(m_listSong.get(i).getArtist().contains(strKeyword))
+				listResult.add(m_listSong.get(i));
+		}
+		return listResult;
+	}
+	
 	private void readFile(String strFilePath) {
 		try{
             File file = new File(strFilePath);
@@ -123,7 +141,7 @@ public class Playlist {
             		}
             		nCnt++;
             	}
-            }         
+            }
             bufReader.close();
         }catch (FileNotFoundException e) {
             // TODO: handle exception
