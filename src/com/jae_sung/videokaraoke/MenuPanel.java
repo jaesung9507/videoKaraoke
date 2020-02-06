@@ -33,36 +33,38 @@ public class MenuPanel extends JPanel {
 	public final int PANEL_MAIN = 0;
 	public final int PANEL_SEARCH = 1;
 	public final int PANEL_INFO = 2;
-	public final int MAX_FOCUS = PANEL_INFO;
+	public final int MAX_CURSOR = PANEL_INFO;
 	
-	CardLayout card = new CardLayout();
-	SearchPanel searchPanel;
-	JLabel searchBtn, infoBtn;
+	private CardLayout m_card = new CardLayout();
+	private SearchPanel m_pnlSearch;
+	private JLabel m_btnSearch, m_btnInfo;
 	
-	private int m_nFocus = PANEL_SEARCH;	// range : 1~MAX_FOCUS
+	private int m_nCursor = PANEL_SEARCH;	// range : 1~MAX_FOCUS
 	private int m_nSelectedPanel = PANEL_MAIN;
 	
-	public MenuPanel(int nTopR, int nTopG, int nTopB, JFrame f) {
-		setLayout(card);
-		JPanel mainPanel = new JPanel();
-		mainPanel.setBackground(new Color(nTopR, nTopG, nTopB, 255));
-		searchBtn = new JLabel();
-		infoBtn = new JLabel();
+	public MenuPanel(JFrame f) {
+		setLayout(m_card);
+		JPanel pnlMain = new JPanel();
+		Color color = new Color(50, 50, 50, 255);
+		pnlMain.setBackground(color);
+		m_btnSearch = new JLabel();
+		m_btnInfo = new JLabel();
 		arrowKeyInput(0x00);
-		mainPanel.add(searchBtn);
-		mainPanel.add(infoBtn);
+		pnlMain.add(m_btnSearch);
+		pnlMain.add(m_btnInfo);
 		
-		searchPanel = new SearchPanel(nTopR, nTopG, nTopB, f);
-		InfoPanel infoPanel = new InfoPanel(nTopR, nTopG, nTopB);
+		m_pnlSearch = new SearchPanel(color, f);
+		InfoPanel pnlInfo = new InfoPanel(color);
 		
-		add(mainPanel, String.valueOf(PANEL_MAIN));
-		add(searchPanel, String.valueOf(PANEL_SEARCH));
-		add(infoPanel, String.valueOf(PANEL_INFO));
+		add(pnlMain, String.valueOf(PANEL_MAIN));
+		add(m_pnlSearch, String.valueOf(PANEL_SEARCH));
+		add(pnlInfo, String.valueOf(PANEL_INFO));
 	}
 	
 	public void init() {
-		card.first(this);
-		m_nFocus = PANEL_SEARCH;
+		m_card.first(this);
+		m_pnlSearch.init();
+		m_nCursor = PANEL_SEARCH;
 		m_nSelectedPanel = PANEL_MAIN;
 		arrowKeyInput(0x00);
 	}
@@ -72,7 +74,7 @@ public class MenuPanel extends JPanel {
 	}
 	
 	public void selectInput() {
-		switch(m_nFocus) {
+		switch(m_nCursor) {
 		case PANEL_SEARCH:
 		case PANEL_INFO:
 			showPanel();
@@ -86,27 +88,27 @@ public class MenuPanel extends JPanel {
 		if(m_nSelectedPanel == PANEL_MAIN) {
 			switch(nKeyCode) {
 			case KeyEvent.VK_LEFT:
-				m_nFocus--;
+				m_nCursor--;
 				break;
 			case KeyEvent.VK_RIGHT:
-				m_nFocus++;
+				m_nCursor++;
 			default:
 				break;
 			}
 			
-			if(m_nFocus > MAX_FOCUS)
-				m_nFocus = MAX_FOCUS;
-			if(m_nFocus < 1)
-				m_nFocus = 1;
+			if(m_nCursor > MAX_CURSOR)
+				m_nCursor = MAX_CURSOR;
+			if(m_nCursor < 1)
+				m_nCursor = 1;
 			
-			switch(m_nFocus) {
+			switch(m_nCursor) {
 			case PANEL_SEARCH:
-				searchBtn.setIcon(new ImageIcon("./res/search_focus.jpg"));
-				infoBtn.setIcon(new ImageIcon("./res/info.jpg"));
+				m_btnSearch.setIcon(new ImageIcon("./res/search_focus.jpg"));
+				m_btnInfo.setIcon(new ImageIcon("./res/info.jpg"));
 				break;
 			case PANEL_INFO:
-				searchBtn.setIcon(new ImageIcon("./res/search.jpg"));
-				infoBtn.setIcon(new ImageIcon("./res/info_focus.jpg"));
+				m_btnSearch.setIcon(new ImageIcon("./res/search.jpg"));
+				m_btnInfo.setIcon(new ImageIcon("./res/info_focus.jpg"));
 				break;
 			default:
 				break;
@@ -115,9 +117,9 @@ public class MenuPanel extends JPanel {
 	}
 	
 	private void showPanel() {
-		m_nSelectedPanel = m_nFocus;
-		card.show(this, String.valueOf(m_nFocus));
-		if(m_nFocus == PANEL_SEARCH)
-			searchPanel.giveFocus();
+		m_nSelectedPanel = m_nCursor;
+		m_card.show(this, String.valueOf(m_nCursor));
+		if(m_nCursor == PANEL_SEARCH)
+			m_pnlSearch.giveFocus();
 	}
 }

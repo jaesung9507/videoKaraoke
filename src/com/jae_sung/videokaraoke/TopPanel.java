@@ -31,29 +31,37 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class TopPanel extends JPanel {
-	private String strKaraokeName;
-	private String strInputNum = "";
-	private String strSongMsg = "";
-	private String strTempMsg = "";
-	private int nTimerCnt = 0;
+	private static TopPanel m_instance = null;
+	private String m_strKaraokeName;
+	private String m_strInputNum = "";
+	private String m_strSongMsg = "";
+	private String m_strTempMsg = "";
+	private int m_nTimerCnt = 0;
 	
-	public TopPanel(int nTopR, int nTopG, int nTopB, String strKaraokeName) {
-		setBackground(new Color(nTopR, nTopG, nTopB, 255));
-		this.strKaraokeName = strKaraokeName;
+	private TopPanel() {
+		SettingMgr setting = SettingMgr.getInstance();
+		setBackground(setting.getTopColor());
+		m_strKaraokeName = setting.getKaraokeName();
+	}
+	
+	public static TopPanel getInstance() {
+		if(m_instance == null)
+			m_instance = new TopPanel();
+		return m_instance;
 	}
 	
 	public void inputNumber(char c) {
 		switch(c) {
 		case KeyEvent.VK_BACK_SPACE:
-			if(strInputNum.length() > 0)
-				strInputNum = strInputNum.substring(0, strInputNum.length()-1);
+			if(m_strInputNum.length() > 0)
+				m_strInputNum = m_strInputNum.substring(0, m_strInputNum.length()-1);
 			break;
 		case KeyEvent.VK_CLEAR:
-			strInputNum = "";
+			m_strInputNum = "";
 			break;
 		default:
-			strInputNum += c;
-			strTempMsg = "";
+			m_strInputNum += c;
+			m_strTempMsg = "";
 			break;
 		}
 		repaint();
@@ -61,19 +69,19 @@ public class TopPanel extends JPanel {
 	
 	public int getInputNumber() {
 		int nResult = -1;
-		if(strInputNum.length() > 0)
-			nResult = Integer.parseInt(strInputNum);
+		if(m_strInputNum.length() > 0)
+			nResult = Integer.parseInt(m_strInputNum);
 		
 		return nResult;
 	}
 	
 	public void setSongMsg(String str) {
-		strSongMsg = str;
+		m_strSongMsg = str;
 		repaint();
 	}
 	
 	public String getSongMsg() {
-		return strSongMsg;
+		return m_strSongMsg;
 	}
 	
 	public void setTempMsg(String str) {
@@ -81,17 +89,17 @@ public class TopPanel extends JPanel {
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
-				nTimerCnt--;
-				if(nTimerCnt == 0) {
-					strTempMsg = "";
+				m_nTimerCnt--;
+				if(m_nTimerCnt == 0) {
+					m_strTempMsg = "";
 					repaint();
 				}
 			}
 		};
 		timer.schedule(task, 3000);
-		nTimerCnt++;
+		m_nTimerCnt++;
 		
-		strTempMsg = str;
+		m_strTempMsg = str;
 		repaint();
 	}
 	
@@ -101,13 +109,13 @@ public class TopPanel extends JPanel {
 		Font font = new Font("Airal", Font.PLAIN, 50);
 		g.setFont(font);
 		g.setColor(new Color(255, 255, 255, 150));
-		String strMsg = strKaraokeName;
-		if(!strSongMsg.equals(""))
-			strMsg = strSongMsg;
-		if(!strInputNum.equals(""))
-			strMsg = strKaraokeName + " - " + strInputNum;
-		if(!strTempMsg.equals(""))
-			strMsg = strTempMsg;
+		String strMsg = m_strKaraokeName;
+		if(!m_strSongMsg.equals(""))
+			strMsg = m_strSongMsg;
+		if(!m_strInputNum.equals(""))
+			strMsg = m_strKaraokeName + " - " + m_strInputNum;
+		if(!m_strTempMsg.equals(""))
+			strMsg = m_strTempMsg;
 		g.drawString(strMsg, 50, (screenSize.height / 15) / 2 + (screenSize.height / 15) / 4);
 	}
 }

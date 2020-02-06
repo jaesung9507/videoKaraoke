@@ -20,11 +20,11 @@
 package com.jae_sung.videokaraoke;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,65 +33,107 @@ import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class SearchPanel extends JPanel implements KeyListener {
-	JLabel categoryLabel;
-	JTextField keywordTxt;
-	JFrame focusMaster;
+	public final int MAX_CURSOR = 8;
 	
-	boolean m_bTitle = true;
+	private JLabel m_lblCategory;
+	private JLabel[] m_lblResult = new JLabel[MAX_CURSOR];
+	private JTextField m_txtKeyword;
+	private JFrame m_frmFocusMaster;
 	
-	public SearchPanel(int nTopR, int nTopG, int nTopB, JFrame f) {
-		setBackground(new Color(nTopR, nTopG, nTopB, 255));
-		focusMaster = f;
+	private boolean m_bTitle = true;
+	private int m_nCursor = 0;
+	private ArrayList<Song> m_listResult;
+	
+	public SearchPanel(Color colorBk, JFrame f) {
+		setBackground(colorBk);
+		m_frmFocusMaster = f;
 		setLayout(null);
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int nWidth = (int)(screenSize.width * 0.8);
-		int nHeight = (int)(screenSize.height * 0.8);
+		int nWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().width * 0.8);
+		int nHeight = (int)(Toolkit.getDefaultToolkit().getScreenSize().height * 0.8);
 		
-		JLabel titleLabel = new JLabel("곡 검색");
+		JLabel lblTitle = new JLabel("곡 검색");
 		Font font = new Font("Airal", Font.PLAIN, 50);
-		titleLabel.setForeground(new Color(255, 255, 255, 255));
-		titleLabel.setFont(font);
-		titleLabel.setBounds(0, 0, nWidth/2, nHeight/9);
+		lblTitle.setForeground(new Color(255, 255, 255, 255));
+		lblTitle.setFont(font);
+		lblTitle.setBounds(0, 0, nWidth/2, nHeight/(MAX_CURSOR+1));
 		
-		categoryLabel = new JLabel("제목별");
-		categoryLabel.setForeground(new Color(255, 255, 255, 255));
-		categoryLabel.setFont(font);
-		categoryLabel.setBounds(nWidth/2, 0, nWidth/8, nHeight/9);
+		m_lblCategory = new JLabel("제목별");
+		m_lblCategory.setForeground(new Color(255, 255, 255, 255));
+		m_lblCategory.setFont(font);
+		m_lblCategory.setBounds(nWidth/2, 0, nWidth/8, nHeight/(MAX_CURSOR+1));
 		
-		keywordTxt = new JTextField();
-		keywordTxt.setOpaque(true);
-		keywordTxt.setBackground(new Color(255, 255, 255, 255));
-		keywordTxt.setFont(font);
-		keywordTxt.setBounds(nWidth/2+nWidth/8, 0, nWidth/8*3, nHeight/9);
-		keywordTxt.addKeyListener(this);
+		m_txtKeyword = new JTextField();
+		m_txtKeyword.setOpaque(true);
+		m_txtKeyword.setBackground(new Color(255, 255, 255, 255));
+		m_txtKeyword.setFont(font);
+		m_txtKeyword.setBounds(nWidth/2+nWidth/8, 0, nWidth/8*3, nHeight/(MAX_CURSOR+1));
+		m_txtKeyword.setFocusTraversalKeysEnabled(false);
+		m_txtKeyword.addKeyListener(this);
 		
-		add(titleLabel);
-		add(categoryLabel);
-		add(keywordTxt);
+		add(lblTitle);
+		add(m_lblCategory);
+		add(m_txtKeyword);
 		
-		JLabel[] resultLabel = new JLabel[8];
-		for(int i=0;i<8;i++) {
-			resultLabel[i] = new JLabel();
-			resultLabel[i].setOpaque(true);
-			if(i%2 == 0)
-				resultLabel[i].setBackground(new Color(nTopR+50, nTopG+50, nTopB+50,255));
-			else
-				resultLabel[i].setBackground(new Color(nTopR, nTopG, nTopB, 255));
-			resultLabel[i].setBounds(0, nHeight/9*(i+1), nWidth, nHeight/9);
-			add(resultLabel[i]);
+		for(int i=0;i<MAX_CURSOR;i++) {
+			m_lblResult[i] = new JLabel();
+			m_lblResult[i].setOpaque(true);
+			m_lblResult[i].setFont(font);
+			m_lblResult[i].setForeground(new Color(255, 255, 255, 255));
+			m_lblResult[i].setBounds(0, nHeight/9*(i+1), nWidth, nHeight/(MAX_CURSOR+1));
+			add(m_lblResult[i]);
 		}
+		
+		resultPrint();
+	}
+	
+	public void init() {
+		m_txtKeyword.setText("");
+		resultPrint();
 	}
 	
 	public void giveFocus() {
-		keywordTxt.requestFocus();
+		m_txtKeyword.requestFocus();
 	}
 	
 	public void toggleCategory() {
 		m_bTitle = !m_bTitle;
 		if(m_bTitle)
-			categoryLabel.setText("제목별");
+			m_lblCategory.setText("제목별");
 		else
-			categoryLabel.setText("가수별");
+			m_lblCategory.setText("가수별");
+	}
+	
+	private void resultPrint() {
+		m_lblResult[0].setText("검색결과 없습니다.");
+		for(int i=1;i<m_lblResult.length;i++)
+			m_lblResult[i].setText("");
+		
+		if(m_bTitle)
+			m_listResult = Playlist.getInstance().searchTitle(m_txtKeyword.getText());
+		else
+			m_listResult = Playlist.getInstance().searchArtist(m_txtKeyword.getText());
+		
+		for(int i=0;i<m_listResult.size();i++) {
+			if(i < MAX_CURSOR)
+				m_lblResult[i].setText(m_listResult.get(i).toString());
+		}
+		cursorPrint();
+	}
+	
+	private void cursorPrint() {
+		if(m_nCursor < 0)
+			m_nCursor = 0;
+		if(m_nCursor >= MAX_CURSOR)
+			m_nCursor = MAX_CURSOR-1;
+		
+		for(int i=0;i<MAX_CURSOR;i++) {
+			if(i == m_nCursor)
+				m_lblResult[i].setBackground(new Color(255, 0, 0, 255));
+			else if(i%2 == 0)
+				m_lblResult[i].setBackground(new Color(100, 100, 100,255));
+			else
+				m_lblResult[i].setBackground(new Color(50, 50, 50, 255));
+		}
 	}
 
 	@Override
@@ -106,17 +148,25 @@ public class SearchPanel extends JPanel implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		switch(e.getKeyCode()) {
 		case KeyEvent.VK_ESCAPE:
 		case KeyEvent.VK_F1:
-			focusMaster.requestFocus();
-			focusMaster.getKeyListeners()[0].keyReleased(e);
+			m_frmFocusMaster.requestFocus();
+			m_frmFocusMaster.getKeyListeners()[0].keyReleased(e);
 			break;
-		case KeyEvent.VK_F8:
+		case KeyEvent.VK_UP:
+			m_nCursor--;
+			cursorPrint();
+			break;
+		case KeyEvent.VK_DOWN:
+			m_nCursor++;
+			cursorPrint();
+			break;
+		case KeyEvent.VK_TAB:
 			toggleCategory();
-			break;
 		default:
+			m_nCursor = 0;
+			resultPrint();
 			break;
 		}
 	}

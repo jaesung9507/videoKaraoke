@@ -25,8 +25,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.util.Properties;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -36,39 +34,22 @@ import javax.sound.sampled.DataLine;
 import javax.swing.JFrame;
 
 class Controller implements KeyListener, FocusListener {
-	Playlist playlist;
-	TopPanel topPanel;
-	MenuPanel menuPanel;
-	VlcPanel vlc;
+	private MenuPanel menuPanel;
+	private VlcPanel vlc;
 	
 	public Controller() {
-		int nTopR = 0, nTopG = 0, nTopB = 0;
-		String strKaraokeName = "노래방", strIntroVideo = "./intro.mp4";
-		try {
-			Properties p = new Properties();
-			System.out.println();
-			p.load(new FileInputStream("./setting.ini"));
-			
-			nTopR = Integer.parseInt(p.getProperty("TopBK_R"));
-			nTopG = Integer.parseInt(p.getProperty("TopBK_G"));
-			nTopB = Integer.parseInt(p.getProperty("TopBK_B"));
-			strKaraokeName = new String(p.getProperty("KaraokeName").getBytes("ISO-8859-1"), "UTF-8");
-			strIntroVideo = p.getProperty("introVideo");
-		}
-		catch(Exception e) { e.printStackTrace(); }
-		
-		playlist = new Playlist("./playlist.txt");
+		Playlist playlist = Playlist.getInstance();
 		System.out.println(playlist);
 		JFrame f = new JFrame();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		topPanel = new TopPanel(nTopR, nTopG, nTopB, strKaraokeName);
+		TopPanel topPanel = TopPanel.getInstance();
 	    topPanel.setBounds(0, 0, screenSize.width, screenSize.height / 15);
-	    menuPanel = new MenuPanel(50, 50, 50, f);
+	    menuPanel = new MenuPanel(f);
 	    menuPanel.setBounds(screenSize.width / 10, screenSize.height/10, (int)(screenSize.width * 0.8), (int)(screenSize.height * 0.8));
 	    menuPanel.setVisible(false);
 	    f.add(topPanel);
 	    f.add(menuPanel);
-		vlc = new VlcPanel(topPanel, strIntroVideo);
+		vlc = new VlcPanel();
 		f.add(vlc);
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		f.setUndecorated(true);
@@ -108,6 +89,8 @@ class Controller implements KeyListener, FocusListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int nKeyCode = e.getKeyCode();
+		Playlist playlist = Playlist.getInstance();
+		TopPanel topPanel = TopPanel.getInstance();
 		switch(nKeyCode) {
 		// 시작
 		case KeyEvent.VK_ENTER:
@@ -226,12 +209,12 @@ public class VideoKaraoke {
 			if(args[0].equals("-ver"))
 				System.out.println("VideoKaraoke version 0.0.3");
 			else if(args[0].equals("-playlist"))
-				System.out.println(new Playlist("./playlist.txt"));
+				System.out.println(Playlist.getInstance());
 			else if(args[0].equals("-artist"))
 				if(args.length > 1)
-					System.out.println(new Playlist("./playlist.txt").toArtistString(args[1]));
+					System.out.println(Playlist.getInstance().toArtistString(args[1]));
 				else
-					System.out.println(new Playlist("./playlist.txt").toArtistString(null));
+					System.out.println(Playlist.getInstance().toArtistString(null));
 			else
 				System.out.println("Unrecognized option: " + args[0]);
 			return;

@@ -33,26 +33,22 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 @SuppressWarnings("serial")
 public class VlcPanel extends JPanel {
-    private EmbeddedMediaPlayerComponent component;
-    private EmbeddedMediaPlayer player;
-    private ArrayList<Song> listSong = new ArrayList<>();
-    private String strIntroPath;
-    private Song playSong = null;
-    private TopPanel topPanel;
-    private int nMsgType = 0;
-    private int nTempo = 0;
+    private EmbeddedMediaPlayerComponent m_component;
+    private EmbeddedMediaPlayer m_player;
+    private ArrayList<Song> m_listSong = new ArrayList<>();
+    private Song m_playSong = null;
+    private int m_nMsgType = 0;
+    private int m_nTempo = 0;
     
-    public VlcPanel(TopPanel topPanel, String strIntroPath) {
-    	this.topPanel = topPanel;
-    	this.strIntroPath = strIntroPath;
+    public VlcPanel() {
     	new NativeDiscovery().discover();
-        component = new EmbeddedMediaPlayerComponent();
-        player = component.getMediaPlayer();
+    	m_component = new EmbeddedMediaPlayerComponent();
+    	m_player = m_component.getMediaPlayer();
 
         setLayout(new BorderLayout());
         setVisible(true);
-        add(component, BorderLayout.CENTER);
-        player.addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
+        add(m_component, BorderLayout.CENTER);
+        m_player.addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
             @Override
             public void finished(MediaPlayer mediaPlayer) {
             	mediaPlayer.setRepeat(true);
@@ -61,60 +57,60 @@ public class VlcPanel extends JPanel {
     }
     
     public void startVLC() {
-    	player.playMedia(strIntroPath);
+    	m_player.playMedia(SettingMgr.getInstance().getIntroVideoPath());
     	Timer timer = new Timer();
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
 				String strMsg = "";
-				if(playSong != null)
-					strMsg = "현재곡 ♬ | " + playSong;
-				else if(nMsgType == 0)
-					nMsgType++;
+				if(m_playSong != null)
+					strMsg = "현재곡 ♬ | " + m_playSong;
+				else if(m_nMsgType == 0)
+					m_nMsgType++;
 
-				switch(nMsgType) {
+				switch(m_nMsgType) {
 				case 1:
-					if(listSong.size() > 0)
-						strMsg = "다음곡 ♬ | " + listSong.get(0);
+					if(m_listSong.size() > 0)
+						strMsg = "다음곡 ♬ | " + m_listSong.get(0);
 					break;
 				case 2:
-					if(listSong.size() > 0) {
+					if(m_listSong.size() > 0) {
 						strMsg = "예약곡 ♬ | ";
-						for(int i=0;i<listSong.size();i++)
-							strMsg += listSong.get(i).getNum() + " ";
+						for(int i=0;i<m_listSong.size();i++)
+							strMsg += m_listSong.get(i).getNum() + " ";
 					}
 					break;
 				default:
 					break;
 				}
 				
-				topPanel.setSongMsg(strMsg);
-				nMsgType++;
-				if(nMsgType > 2)
-					nMsgType = 0;
+				TopPanel.getInstance().setSongMsg(strMsg);
+				m_nMsgType++;
+				if(m_nMsgType > 2)
+					m_nMsgType = 0;
 			}
 		};
 		timer.schedule(task, 0, 3000);
     }
     
     public void volumeUp() {
-    	int nVolume = player.getVolume() + 1;
+    	int nVolume = m_player.getVolume() + 1;
     	if(nVolume > 100)
     		nVolume = 100;
-    	player.setVolume(nVolume);
+    	m_player.setVolume(nVolume);
     	printVolume();
     }
     
     public void volumeDown() {
-    	int nVolume = player.getVolume() - 1;
+    	int nVolume = m_player.getVolume() - 1;
     	if(nVolume < 0)
     		nVolume = 0;
-    	player.setVolume(nVolume);
+    	m_player.setVolume(nVolume);
     	printVolume();
     }
     
     private void printVolume() {
-    	int nVolume = player.getVolume();
+    	int nVolume = m_player.getVolume();
     	String strMsg = "반주음량 | "+ nVolume +" -[";
     	int nProgress = nVolume / 5;
     	for(int i=0;i<nProgress;i++)
@@ -122,32 +118,32 @@ public class VlcPanel extends JPanel {
     	for(int i=20;i>nProgress;i--)
     		strMsg += "-";
     	strMsg += "]+";
-    	topPanel.setTempMsg(strMsg);
+    	TopPanel.getInstance().setTempMsg(strMsg);
     }
     
     public void tempoUp() {
-    	if(playSong != null) {
-    		if(++nTempo > 6)
-    			nTempo = 6;
-    		float fTempo = 1.0f + nTempo * 0.1f;
-    		player.setRate(fTempo);
+    	if(m_playSong != null) {
+    		if(++m_nTempo > 6)
+    			m_nTempo = 6;
+    		float fTempo = 1.0f + m_nTempo * 0.1f;
+    		m_player.setRate(fTempo);
     		printTempo();
     	}
     }
     
     public void tempoDown() {
-    	if(playSong != null) {
-    		if(--nTempo < -6)
-    			nTempo = -6;
-    		float fTempo = 1.0f + nTempo * 0.1f;
-    		player.setRate(fTempo);
+    	if(m_playSong != null) {
+    		if(--m_nTempo < -6)
+    			m_nTempo = -6;
+    		float fTempo = 1.0f + m_nTempo * 0.1f;
+    		m_player.setRate(fTempo);
     		printTempo();
     	}
     }
     
     private void printTempo() {
     	String strMsg = "템포 | ";
-    	switch(nTempo) {
+    	switch(m_nTempo) {
     	case -6: strMsg += "- ◀◁◁◁◁◁□▷▷▷▷▷▷ +"; break;
     	case -5: strMsg += "- ◁◀◁◁◁◁□▷▷▷▷▷▷ +"; break;
     	case -4: strMsg += "- ◁◁◀◁◁◁□▷▷▷▷▷▷ +"; break;
@@ -163,17 +159,17 @@ public class VlcPanel extends JPanel {
     	case 6: strMsg += "- ◁◁◁◁◁◁□▷▷▷▷▷▶ +"; break;
     	default: return;
     	}
-    	topPanel.setTempMsg(strMsg);
+    	TopPanel.getInstance().setTempMsg(strMsg);
     }
     
     public int getSongCount() {
-    	return listSong.size();
+    	return m_listSong.size();
     }
     
     public boolean addSong(Song song) {
 		boolean bResult = false;
     	if(song != null) {
-    		listSong.add(song);
+    		m_listSong.add(song);
     		bResult = true;
     	}
     	return bResult;
@@ -182,70 +178,70 @@ public class VlcPanel extends JPanel {
     public boolean addFirstSong(Song song) {
     	boolean bResult = false;
     	if(song != null) {
-    		listSong.add(0, song);
+    		m_listSong.add(0, song);
     		bResult = true;
     	}
     	return bResult;
     }
     
     public void playSong() {
-    	if(listSong.size() > 0) {
-    		playSong = listSong.get(0);
-    		listSong.remove(0);
+    	if(m_listSong.size() > 0) {
+    		m_playSong = m_listSong.get(0);
+    		m_listSong.remove(0);
     	}
     	else {
-    		playSong = null;
+    		m_playSong = null;
     	}
     	endVideo();
     }
     
     public void pauseSong() {
-    	if(playSong != null) {
-    		if(player.canPause())
-    			player.pause();
+    	if(m_playSong != null) {
+    		if(m_player.canPause())
+    			m_player.pause();
     		else
-    			player.play();
+    			m_player.play();
     	}
     }
     
     public void cancelSong() {
-    	if(playSong != null) {
-    		playSong = null;
+    	if(m_playSong != null) {
+    		m_playSong = null;
     		endVideo();
     	}
     }
     
     private void runVideo() {
-    	if(playSong != null) {
-    		if(player.playMedia(playSong.getFilePath()))
-    			topPanel.setSongMsg("현재곡 ♬ | " + playSong);
+    	if(m_playSong != null) {
+    		if(m_player.playMedia(m_playSong.getFilePath()))
+    			TopPanel.getInstance().setSongMsg("현재곡 ♬ | " + m_playSong);
     		else
-    			topPanel.setTempMsg(playSong.getNum() + " | 오류로 시작할 수 없습니다.");
+    			TopPanel.getInstance().setTempMsg(m_playSong.getNum() + " | 오류로 시작할 수 없습니다.");
     	}
     	else {
-    		player.playMedia(strIntroPath);
-    		topPanel.setSongMsg("");
+    		m_player.playMedia(SettingMgr.getInstance().getIntroVideoPath());
+    		TopPanel.getInstance().setSongMsg("");
     	}
     }
     
     private void endVideo() {
-    	player.release();
-        component.release();
-        remove(component);
-        component = new EmbeddedMediaPlayerComponent();
-        player = component.getMediaPlayer();
-        player.setPlaySubItems(true);
-        add(component, BorderLayout.CENTER);
+    	m_player.release();
+    	m_component.release();
+        remove(m_component);
+        m_component = new EmbeddedMediaPlayerComponent();
+        m_player = m_component.getMediaPlayer();
+        m_player.setPlaySubItems(true);
+        add(m_component, BorderLayout.CENTER);
         revalidate();
-        player.addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
+        m_player.addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
         	int nCall = 0;
             @Override
             public void finished(MediaPlayer mediaPlayer) {
-            	if(playSong == null) {
+            	if(m_playSong == null) {
         			mediaPlayer.setRepeat(true);
         		}
             	else {
-            		if(playSong.getFilePath().substring(0,4).equals("http")) {
+            		if(m_playSong.getFilePath().substring(0,4).equals("http")) {
             			nCall++;
             			if(nCall <= 1)
                 			return;
@@ -255,7 +251,7 @@ public class VlcPanel extends JPanel {
             }
             @Override
             public void error(MediaPlayer mediaPlayer) {
-            	topPanel.setTempMsg(playSong.getNum() + " | 설정된 경로 또는 URL을 확인하세요.");
+            	TopPanel.getInstance().setTempMsg(m_playSong.getNum() + " | 설정된 경로 또는 URL을 확인하세요.");
             	cancelSong();
             }
         });

@@ -26,8 +26,8 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class InfoPanel extends JPanel {
-	public InfoPanel(int nTopR, int nTopG, int nTopB) {
-		setBackground(new Color(nTopR, nTopG, nTopB, 255));
+	public InfoPanel(Color colorBk) {
+		setBackground(colorBk);
 		JLabel infoLabel = new JLabel(getInfoText());
 		infoLabel.setForeground(new Color(255, 255, 255, 255));
 		add(infoLabel);

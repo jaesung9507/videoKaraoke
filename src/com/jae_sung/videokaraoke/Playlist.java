@@ -27,11 +27,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Playlist {
-	private ArrayList<Song> m_listSong;
+	private static Playlist m_instance = null;
+	private ArrayList<Song> m_listSong = new ArrayList<>();
 	
-	public Playlist(String strFilePath) {
-		m_listSong = new ArrayList<>();
+	private Playlist(String strFilePath) {
 		readFile(strFilePath);
+	}
+	
+	public static Playlist getInstance() {
+		if(m_instance == null)
+			m_instance = new Playlist("./playlist.txt");
+		return m_instance;
 	}
 	
 	@Override
