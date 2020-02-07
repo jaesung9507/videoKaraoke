@@ -202,7 +202,6 @@ class Controller implements KeyListener, FocusListener {
 }
 
 public class VideoKaraoke {
-
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		if(args.length > 0) {
@@ -222,5 +221,28 @@ public class VideoKaraoke {
 		else {
 			new Controller();
 		}
+	}
+	
+	public static String splitHangeulToConsonant(String text) {
+    	final int HANGEUL_BASE = 0xAC00;
+    	final int HANGEUL_END = 0xD7AF;
+    	final int CHO_BASE = 0x1100;
+    	final int[] CHO_ARRAY= {
+    			0x3131,0x3132,0x3134,0x3137,0x3138,0x3139,
+    			0x3141,0x3142,0x3143,0x3145,0x3146,0x3147,0x3148,0x3149,
+    			0x314a,0x314b,0x314c,0x314d,0x314e
+    	};
+    	
+    	StringBuilder sb = new StringBuilder();
+    	for(char t_cho : text.toCharArray()) {
+    		if(t_cho >= HANGEUL_BASE && t_cho <= HANGEUL_END){
+    			int choInt = ((t_cho - HANGEUL_BASE) / 28 / 21) + CHO_BASE;
+    			char cho = (char) CHO_ARRAY[choInt-CHO_BASE];
+    			sb.append(cho);
+    		} else {
+    			sb.append(t_cho);
+    		}
+    	}
+    	return sb.toString();
 	}
 }

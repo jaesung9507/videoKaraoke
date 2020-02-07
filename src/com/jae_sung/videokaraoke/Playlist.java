@@ -97,7 +97,8 @@ public class Playlist {
 	public ArrayList<Song> searchTitle(String strKeyword) {
 		ArrayList<Song> listResult = new ArrayList<>();
 		for(int i=0; i < m_listSong.size(); i++){
-			if(m_listSong.get(i).getName().contains(strKeyword))
+			String choName = VideoKaraoke.splitHangeulToConsonant((m_listSong.get(i).getName()));
+			if(m_listSong.get(i).getName().contains(strKeyword) || choName.contains(strKeyword))
 				listResult.add(m_listSong.get(i));
 		}
 		return listResult;
@@ -106,7 +107,8 @@ public class Playlist {
 	public ArrayList<Song> searchArtist(String strKeyword) {
 		ArrayList<Song> listResult = new ArrayList<>();
 		for(int i=0; i < m_listSong.size(); i++){
-			if(m_listSong.get(i).getArtist().contains(strKeyword))
+			String choArtist = VideoKaraoke.splitHangeulToConsonant((m_listSong.get(i).getArtist()));
+			if(m_listSong.get(i).getArtist().contains(strKeyword) || choArtist.contains(strKeyword))
 				listResult.add(m_listSong.get(i));
 		}
 		return listResult;
