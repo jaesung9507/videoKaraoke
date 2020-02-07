@@ -42,6 +42,7 @@ public class SearchPanel extends JPanel implements KeyListener {
 	
 	private boolean m_bTitle = true;
 	private int m_nCursor = 0;
+	private int m_nPage = 0;
 	private ArrayList<Song> m_listResult;
 	
 	public SearchPanel(Color colorBk, JFrame f) {
@@ -88,6 +89,8 @@ public class SearchPanel extends JPanel implements KeyListener {
 	
 	public void init() {
 		m_txtKeyword.setText("");
+		m_nCursor = 0;
+		m_nPage = 0;
 		resultPrint();
 	}
 	
@@ -113,26 +116,47 @@ public class SearchPanel extends JPanel implements KeyListener {
 		else
 			m_listResult = Playlist.getInstance().searchArtist(m_txtKeyword.getText());
 		
-		for(int i=0;i<m_listResult.size();i++) {
-			if(i < MAX_CURSOR)
-				m_lblResult[i].setText(m_listResult.get(i).toString());
+		for(int i=0;i<MAX_CURSOR;i++) {
+			int nIndex = i + MAX_CURSOR*m_nPage;
+			if(m_listResult.size() <= nIndex)
+				break;
+			m_lblResult[i].setText(m_listResult.get(nIndex).toString());
 		}
 		cursorPrint();
 	}
 	
 	private void cursorPrint() {
-		if(m_nCursor < 0)
-			m_nCursor = 0;
-		if(m_nCursor >= MAX_CURSOR)
-			m_nCursor = MAX_CURSOR-1;
-		
-		for(int i=0;i<MAX_CURSOR;i++) {
-			if(i == m_nCursor)
-				m_lblResult[i].setBackground(new Color(255, 0, 0, 255));
-			else if(i%2 == 0)
-				m_lblResult[i].setBackground(new Color(100, 100, 100,255));
-			else
-				m_lblResult[i].setBackground(new Color(50, 50, 50, 255));
+		if(m_nCursor < 0) {
+			m_nPage--;
+			if(m_nPage < 0) {
+				m_nCursor = 0;
+				m_nPage = 0;
+			}
+			else {
+				m_nCursor = MAX_CURSOR-1;
+				resultPrint();
+			}
+		}
+		else if(m_nCursor >= MAX_CURSOR) {
+			m_nPage++;
+			if(m_nPage > (m_listResult.size()-1) / MAX_CURSOR) {
+				m_nCursor = MAX_CURSOR-1;
+				m_nPage = (m_listResult.size()-1) / MAX_CURSOR;
+			}
+			else {
+				m_nCursor = 0;
+				resultPrint();
+			}
+		}
+		else {
+			for(int i=0;i<MAX_CURSOR;i++) {
+				if(i == m_nCursor)
+					m_lblResult[i].setBackground(new Color(255, 0, 0, 255));
+				else if(i%2 == 0)
+					m_lblResult[i].setBackground(new Color(100, 100, 100,255));
+				else
+					m_lblResult[i].setBackground(new Color(50, 50, 50, 255));
+			}
 		}
 	}
 
@@ -166,6 +190,7 @@ public class SearchPanel extends JPanel implements KeyListener {
 			toggleCategory();
 		default:
 			m_nCursor = 0;
+			m_nPage = 0;
 			resultPrint();
 			break;
 		}
