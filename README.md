@@ -1,6 +1,5 @@
 # VideoKaraoke
-<img src="https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fcafeptthumb-phinf.pstatic.net%2FMjAxOTEwMDZfMTM4%2FMDAxNTcwMzE4MDI2OTM5.AB-gb-QQZ-APMMSO6qShag3u5CfvhNRNiaEFa2jdSAgg.u7FLKGcdGVGjUpYhQOwkMBNFuQgkuj3IBM8t3UVcyWcg.JPEG%2F%2525B6%2525F3%2525C1%2525EE%2525B0%2525D7%2525B5%2525BF.jpg%3Ftype%3Dw740%22&type=f220" alt="raspigamer" width="150" height="150"/>
-<img src="https://cafeptthumb-phinf.pstatic.net/MjAyMDAyMDJfMTI0/MDAxNTgwNjMwMTkwOTE5.oqens2y_zyJzU4dlqi_HN6aGNX846gQ12adxoOiBVXEg.-a0Zbu7Ex2t58pePQByqK3pjB7zbRR03nlqXCvO_wUQg.PNG/eoms.png?type=w740" alt="raspigamer/33476" width="175" height="175"/>
+<img src="https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fcafeptthumb-phinf.pstatic.net%2FMjAxOTEwMDZfMTM4%2FMDAxNTcwMzE4MDI2OTM5.AB-gb-QQZ-APMMSO6qShag3u5CfvhNRNiaEFa2jdSAgg.u7FLKGcdGVGjUpYhQOwkMBNFuQgkuj3IBM8t3UVcyWcg.JPEG%2F%2525B6%2525F3%2525C1%2525EE%2525B0%2525D7%2525B5%2525BF.jpg%3Ftype%3Dw740%22&type=f220" alt="raspigamer" width="150" height="150"/><img src="https://cafeptthumb-phinf.pstatic.net/MjAyMDAyMDJfMTI0/MDAxNTgwNjMwMTkwOTE5.oqens2y_zyJzU4dlqi_HN6aGNX846gQ12adxoOiBVXEg.-a0Zbu7Ex2t58pePQByqK3pjB7zbRR03nlqXCvO_wUQg.PNG/eoms.png?type=w740" alt="raspigamer/33476" width="175" height="175"/>
   
 이 프로젝트는 네이버카페 "라즈겜동"에서 2020년 1월 소프트웨어 부분 우수작품으로 선정되었습니다.  
   
