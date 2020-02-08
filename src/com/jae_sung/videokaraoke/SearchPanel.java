@@ -41,8 +41,8 @@ public class SearchPanel extends JPanel implements KeyListener {
 	private JFrame m_frmFocusMaster;
 	
 	private boolean m_bTitle = true;
-	private int m_nCursor = 0;
-	private int m_nPage = 0;
+	private int m_nCursor = 0;	// range : 0~MAX_CURSOR-1
+	private int m_nPage = 0;	// range : 0~N
 	private ArrayList<Song> m_listResult;
 	
 	public SearchPanel(Color colorBk, JFrame f) {
@@ -83,7 +83,6 @@ public class SearchPanel extends JPanel implements KeyListener {
 			m_lblResult[i].setBounds(0, nHeight/9*(i+1), nWidth, nHeight/(MAX_CURSOR+1));
 			add(m_lblResult[i]);
 		}
-		
 		resultPrint();
 	}
 	
@@ -111,10 +110,18 @@ public class SearchPanel extends JPanel implements KeyListener {
 		for(int i=1;i<m_lblResult.length;i++)
 			m_lblResult[i].setText("");
 		
+		String strKeyword = m_txtKeyword.getText();
+		strKeyword = strKeyword.replace("ㄳ", "ㄱㅅ")
+				.replace("ㄵ", "ㄴㅈ").replace("ㄶ", "ㄴㅎ")
+				.replace("ㄺ", "ㄹㄱ").replace("ㄻ", "ㄹㅁ")
+				.replace("ㄼ", "ㄹㅂ").replace("ㄽ", "ㄹㅅ")
+				.replace("ㄾ", "ㄹㅌ").replace("ㄿ", "ㄹㅍ")
+				.replace("ㅀ", "ㄹㅎ").replace("ㅄ", "ㅂㅅ");
+		
 		if(m_bTitle)
-			m_listResult = Playlist.getInstance().searchTitle(m_txtKeyword.getText());
+			m_listResult = Playlist.getInstance().searchTitle(strKeyword);
 		else
-			m_listResult = Playlist.getInstance().searchArtist(m_txtKeyword.getText());
+			m_listResult = Playlist.getInstance().searchArtist(strKeyword);
 		
 		for(int i=0;i<MAX_CURSOR;i++) {
 			int nIndex = i + MAX_CURSOR*m_nPage;

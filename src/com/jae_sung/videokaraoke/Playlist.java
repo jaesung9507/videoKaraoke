@@ -97,7 +97,7 @@ public class Playlist {
 	public ArrayList<Song> searchTitle(String strKeyword) {
 		ArrayList<Song> listResult = new ArrayList<>();
 		for(int i=0; i < m_listSong.size(); i++){
-			String choName = VideoKaraoke.splitHangeulToConsonant((m_listSong.get(i).getName()));
+			String choName = VideoKaraoke.splitHangulToConsonant((m_listSong.get(i).getName()));
 			if(m_listSong.get(i).getName().replaceAll(" ", "").contains(strKeyword) || choName.replaceAll(" ", "").contains(strKeyword))
 				listResult.add(m_listSong.get(i));
 		}
@@ -107,7 +107,7 @@ public class Playlist {
 	public ArrayList<Song> searchArtist(String strKeyword) {
 		ArrayList<Song> listResult = new ArrayList<>();
 		for(int i=0; i < m_listSong.size(); i++){
-			String choArtist = VideoKaraoke.splitHangeulToConsonant((m_listSong.get(i).getArtist()));
+			String choArtist = VideoKaraoke.splitHangulToConsonant((m_listSong.get(i).getArtist()));
 			if(m_listSong.get(i).getArtist().replaceAll(" ", "").contains(strKeyword) || choArtist.replaceAll(" ", "").contains(strKeyword))
 				listResult.add(m_listSong.get(i));
 		}

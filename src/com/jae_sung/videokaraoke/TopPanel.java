@@ -102,7 +102,7 @@ public class TopPanel extends JPanel {
 		m_strTempMsg = str;
 		repaint();
 	}
-	
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
