@@ -61,7 +61,7 @@ class Controller implements KeyListener, FocusListener {
 	}
 	
 	private void playSound(String FilePath) {
-		try {          
+		try {
 			File soundFile = new File(FilePath);
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile); 
 			AudioFormat format = audioIn.getFormat();             
@@ -94,13 +94,15 @@ class Controller implements KeyListener, FocusListener {
 		switch(nKeyCode) {
 		// 시작
 		case KeyEvent.VK_ENTER:
-			if(vlc.addFirstSong(playlist.searchSong(topPanel.getInputNumber())))
-				vlc.playSong();
-			else if(topPanel.getInputNumber() != -1)
-				topPanel.setTempMsg("안내 | 없는 곡입니다.");
-			else if(vlc.getSongCount() > 0)
-				vlc.playSong();
-			topPanel.inputNumber((char)KeyEvent.VK_CLEAR);
+			if(!menuPanel.isVisible()) {
+				if(playlist.bookFirstSong(topPanel.getInputNumber(), false))
+					vlc.playSong();
+				else if(topPanel.getInputNumber() != -1)
+					topPanel.setTempMsg("안내 | 없는 곡입니다.");
+				else if(playlist.getBookedSongCount() > 0)
+					vlc.playSong();
+				topPanel.inputNumber((char)KeyEvent.VK_CLEAR);
+			}
 			break;
 		// 취소
 		case KeyEvent.VK_ESCAPE:
@@ -116,23 +118,13 @@ class Controller implements KeyListener, FocusListener {
 		case KeyEvent.VK_SPACE:
 			vlc.pauseSong();
 			break;
-		// 예약
-		case KeyEvent.VK_CONTROL:
-			if(vlc.addSong(playlist.searchSong(topPanel.getInputNumber())))
-				topPanel.setTempMsg(topPanel.getInputNumber() + " | 예약되었습니다.");
-			topPanel.inputNumber((char)KeyEvent.VK_CLEAR);
-			break;
-		// 우선예약
-		case KeyEvent.VK_SHIFT:
-			if(vlc.addFirstSong(playlist.searchSong(topPanel.getInputNumber())))
-				topPanel.setTempMsg(topPanel.getInputNumber() + " | 우선예약되었습니다.");
-			topPanel.inputNumber((char)KeyEvent.VK_CLEAR);
-			break;
 		// 방향키 이동
 		case KeyEvent.VK_LEFT:
 		case KeyEvent.VK_RIGHT:
+		case KeyEvent.VK_UP:
+		case KeyEvent.VK_DOWN:
 			if(menuPanel.isVisible())
-				menuPanel.arrowKeyInput(nKeyCode);
+				menuPanel.keyReleased(nKeyCode);
 			break;
 		// 메뉴
 		case KeyEvent.VK_F1:
@@ -165,6 +157,21 @@ class Controller implements KeyListener, FocusListener {
 			if(menuPanel.isVisible())
 				menuPanel.selectInput();
 			break;
+		// 예약
+		case KeyEvent.VK_F8:
+			playlist.bookSong(topPanel.getInputNumber());
+			topPanel.inputNumber((char)KeyEvent.VK_CLEAR);
+			break;
+		// 우선예약
+		case KeyEvent.VK_F9:
+			playlist.bookFirstSong(topPanel.getInputNumber());
+			topPanel.inputNumber((char)KeyEvent.VK_CLEAR);
+			break;
+		// 예약취소
+		case KeyEvent.VK_DELETE:
+			if(menuPanel.getSelectedPanel() == menuPanel.PANEL_BOOKED)
+				menuPanel.keyReleased(nKeyCode);
+			break;
 		case KeyEvent.VK_0:
 		case KeyEvent.VK_1:
 		case KeyEvent.VK_2:
@@ -191,7 +198,10 @@ class Controller implements KeyListener, FocusListener {
 
 	@Override
 	public void focusGained(FocusEvent e) {
-		// TODO Auto-generated method stub
+		if(menuPanel.isVisible()) {
+			menuPanel.init();
+			menuPanel.setVisible(false);
+		}
 	}
 
 	@Override

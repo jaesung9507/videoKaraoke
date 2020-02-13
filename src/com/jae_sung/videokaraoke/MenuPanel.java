@@ -38,6 +38,7 @@ public class MenuPanel extends JPanel {
 	
 	private CardLayout m_card = new CardLayout();
 	private SearchPanel m_pnlSearch;
+	private BookedPanel m_pnlBooked;
 	
 	private int m_nCursor = PANEL_SEARCH;	// range : 1~MAX_CURSOR
 	private int m_nSelectedPanel = PANEL_MAIN;
@@ -65,12 +66,12 @@ public class MenuPanel extends JPanel {
 		pnlMain.setBackground(color);
 		
 		m_pnlSearch = new SearchPanel(color, f);
-		BookedPanel pnlBooked = new BookedPanel(color);
+		m_pnlBooked = new BookedPanel(color);
 		InfoPanel pnlInfo = new InfoPanel(color);
 		
 		add(pnlMain, String.valueOf(PANEL_MAIN));
 		add(m_pnlSearch, String.valueOf(PANEL_SEARCH));
-		add(pnlBooked, String.valueOf(PANEL_BOOKED));
+		add(m_pnlBooked, String.valueOf(PANEL_BOOKED));
 		add(pnlInfo, String.valueOf(PANEL_INFO));
 	}
 	
@@ -79,7 +80,7 @@ public class MenuPanel extends JPanel {
 		m_pnlSearch.init();
 		m_nCursor = PANEL_SEARCH;
 		m_nSelectedPanel = PANEL_MAIN;
-		arrowKeyInput(0x00);
+		keyReleased(0x00);
 	}
 	
 	public int getSelectedPanel() {
@@ -98,7 +99,7 @@ public class MenuPanel extends JPanel {
 		}
 	}
 	
-	public void arrowKeyInput(int nKeyCode) {
+	public void keyReleased(int nKeyCode) {
 		if(m_nSelectedPanel == PANEL_MAIN) {
 			switch(nKeyCode) {
 			case KeyEvent.VK_LEFT:
@@ -106,8 +107,9 @@ public class MenuPanel extends JPanel {
 				break;
 			case KeyEvent.VK_RIGHT:
 				m_nCursor++;
-			default:
 				break;
+			default:
+				return;
 			}
 			
 			if(m_nCursor > MAX_CURSOR)
@@ -116,6 +118,9 @@ public class MenuPanel extends JPanel {
 				m_nCursor = 1;
 			repaint();
 		}
+		else if(m_nSelectedPanel == PANEL_BOOKED) {
+			m_pnlBooked.keyReleased(nKeyCode);
+		}
 	}
 	
 	private void showPanel() {
@@ -123,5 +128,7 @@ public class MenuPanel extends JPanel {
 		m_card.show(this, String.valueOf(m_nCursor));
 		if(m_nCursor == PANEL_SEARCH)
 			m_pnlSearch.giveFocus();
+		else if (m_nCursor == PANEL_BOOKED)
+			m_pnlBooked.bookPrint();
 	}
 }

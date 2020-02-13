@@ -25,10 +25,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Playlist {
 	private static Playlist m_instance = null;
 	private ArrayList<Song> m_listSong = new ArrayList<>();
+	private Queue<Song> m_queueBooked = new LinkedList<Song>();
 	
 	private Playlist(String strFilePath) {
 		readFile(strFilePath);
@@ -60,6 +63,56 @@ public class Playlist {
 		return strResult;
 	}
 	
+	public void bookSong(int nNum) {
+		Song song = getSong(nNum);
+    	bookSong(song);
+    }
+	
+	public void bookSong(Song song) {
+    	if(song != null) {
+    		m_queueBooked.offer(song);
+    		TopPanel.getInstance().setTempMsg(song.getNum() + " | 예약되었습니다.");
+    	}
+    }
+	
+	public boolean bookFirstSong(int nNum) {
+		Song song = getSong(nNum);
+    	return bookFirstSong(song, true);
+	}
+	
+	public boolean bookFirstSong(int nNum, boolean bMsg) {
+		Song song = getSong(nNum);
+    	return bookFirstSong(song, bMsg);
+	}
+	
+	public boolean bookFirstSong(Song song, boolean bMsg) {
+		boolean bResult = false;
+    	if(song != null) {
+    		((LinkedList<Song>)m_queueBooked).add(0, song);
+    		bResult = true;
+    		if(bMsg)
+    			TopPanel.getInstance().setTempMsg(song.getNum() + " | 우선예약되었습니다.");
+    	}
+    	return bResult;
+    }
+	
+	public void deleteBookedSong(int nIndex) {
+		if(m_queueBooked.size() > nIndex)
+			((LinkedList<Song>)m_queueBooked).remove(nIndex);
+	}
+	
+	public Song getBookedSong(int nIndex) {
+		return ((LinkedList<Song>)m_queueBooked).get(nIndex);
+	}
+	
+	public Song pollBookedSong() {
+		return m_queueBooked.poll();
+	}
+	
+	public int getBookedSongCount() {
+    	return m_queueBooked.size();
+    }
+	
 	public void exportHTML() {
 		String strResult = "<html><head><title>Playlist</title></head><body><table border=\"1\">";
 		strResult += "<tr><th style=\"background-color: #ffff00;\">번호</th><th>제목</th><th>가수</th></tr>";
@@ -81,7 +134,7 @@ public class Playlist {
 		}
 	}
 	
-	public Song searchSong(int nNum) {
+	public Song getSong(int nNum) {
 		Song song = null;
 		if(nNum != -1) {
 			for(int i=0; i<m_listSong.size();i++) {

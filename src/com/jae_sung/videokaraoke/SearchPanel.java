@@ -33,7 +33,7 @@ import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class SearchPanel extends JPanel implements KeyListener {
-	public final int MAX_CURSOR = 8;
+	private final int MAX_CURSOR = 8;
 	
 	private JLabel m_lblCategory;
 	private JLabel[] m_lblResult = new JLabel[MAX_CURSOR];
@@ -166,6 +166,12 @@ public class SearchPanel extends JPanel implements KeyListener {
 			}
 		}
 	}
+	
+	private int getSelectedSongNum() {
+		String strResult = m_lblResult[m_nCursor].getText();
+		strResult = strResult.substring(0, strResult.indexOf(" "));
+		return Integer.parseInt(strResult);
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -183,7 +189,17 @@ public class SearchPanel extends JPanel implements KeyListener {
 		case KeyEvent.VK_ESCAPE:
 		case KeyEvent.VK_F1:
 			m_frmFocusMaster.requestFocus();
+			break;
+		case KeyEvent.VK_ENTER:
+			Playlist.getInstance().bookFirstSong(getSelectedSongNum(), false);
+			m_frmFocusMaster.requestFocus();
 			m_frmFocusMaster.getKeyListeners()[0].keyReleased(e);
+			break;
+		case KeyEvent.VK_F8:
+			Playlist.getInstance().bookSong(getSelectedSongNum());
+			break;
+		case KeyEvent.VK_F9:
+			Playlist.getInstance().bookFirstSong(getSelectedSongNum());
 			break;
 		case KeyEvent.VK_UP:
 			m_nCursor--;

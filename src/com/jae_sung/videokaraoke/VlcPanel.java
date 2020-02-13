@@ -19,7 +19,6 @@
 
 package com.jae_sung.videokaraoke;
 import java.awt.BorderLayout;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,9 +34,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 public class VlcPanel extends JPanel {
     private EmbeddedMediaPlayerComponent m_component;
     private EmbeddedMediaPlayer m_player;
-    private ArrayList<Song> m_listSong = new ArrayList<>();
     private Song m_playSong = null;
-    private int m_nMsgType = 0;
     private int m_nTempo = 0;
     
     public VlcPanel() {
@@ -60,9 +57,11 @@ public class VlcPanel extends JPanel {
     	m_player.playMedia(SettingMgr.getInstance().getIntroVideoPath());
     	Timer timer = new Timer();
 		TimerTask task = new TimerTask() {
+			private int m_nMsgType = 0;
 			@Override
 			public void run() {
 				String strMsg = "";
+				Playlist playlist = Playlist.getInstance();
 				if(m_playSong != null)
 					strMsg = "현재곡 ♬ | " + m_playSong;
 				else if(m_nMsgType == 0)
@@ -70,14 +69,14 @@ public class VlcPanel extends JPanel {
 
 				switch(m_nMsgType) {
 				case 1:
-					if(m_listSong.size() > 0)
-						strMsg = "다음곡 ♬ | " + m_listSong.get(0);
+					if(playlist.getBookedSongCount() > 0)
+						strMsg = "다음곡 ♬ | " + playlist.getBookedSong(0);
 					break;
 				case 2:
-					if(m_listSong.size() > 0) {
+					if(playlist.getBookedSongCount() > 0) {
 						strMsg = "예약곡 ♬ | ";
-						for(int i=0;i<m_listSong.size();i++)
-							strMsg += m_listSong.get(i).getNum() + " ";
+						for(int i=0;i<playlist.getBookedSongCount();i++)
+							strMsg += playlist.getBookedSong(i).getNum() + " ";
 					}
 					break;
 				default:
@@ -162,36 +161,9 @@ public class VlcPanel extends JPanel {
     	TopPanel.getInstance().setTempMsg(strMsg);
     }
     
-    public int getSongCount() {
-    	return m_listSong.size();
-    }
-    
-    public boolean addSong(Song song) {
-		boolean bResult = false;
-    	if(song != null) {
-    		m_listSong.add(song);
-    		bResult = true;
-    	}
-    	return bResult;
-    }
-    
-    public boolean addFirstSong(Song song) {
-    	boolean bResult = false;
-    	if(song != null) {
-    		m_listSong.add(0, song);
-    		bResult = true;
-    	}
-    	return bResult;
-    }
-    
     public void playSong() {
-    	if(m_listSong.size() > 0) {
-    		m_playSong = m_listSong.get(0);
-    		m_listSong.remove(0);
-    	}
-    	else {
-    		m_playSong = null;
-    	}
+    	Playlist playlist = Playlist.getInstance();
+    	m_playSong = playlist.pollBookedSong();
     	endVideo();
     }
     
