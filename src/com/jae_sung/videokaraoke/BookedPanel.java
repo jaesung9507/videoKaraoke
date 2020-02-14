@@ -88,7 +88,10 @@ public class BookedPanel extends JPanel {
 			break;
 		case KeyEvent.VK_DELETE:
 			Playlist.getInstance().deleteBookedSong(m_nCursor);
+		case KeyEvent.VK_F8:
+		case KeyEvent.VK_F9:
 			bookPrint();
+			break;
 		default:
 			return;
 		}

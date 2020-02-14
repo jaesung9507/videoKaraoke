@@ -94,7 +94,8 @@ class Controller implements KeyListener, FocusListener {
 		switch(nKeyCode) {
 		// 시작
 		case KeyEvent.VK_ENTER:
-			if(!menuPanel.isVisible()) {
+			if(menuPanel.isVisible() == false ||
+					menuPanel.getSelectedPanel() == menuPanel.PANEL_SEARCH) {
 				if(playlist.bookFirstSong(topPanel.getInputNumber(), false))
 					vlc.playSong();
 				else if(topPanel.getInputNumber() != -1)
@@ -161,11 +162,13 @@ class Controller implements KeyListener, FocusListener {
 		case KeyEvent.VK_F8:
 			playlist.bookSong(topPanel.getInputNumber());
 			topPanel.inputNumber((char)KeyEvent.VK_CLEAR);
+			menuPanel.keyReleased(nKeyCode);
 			break;
 		// 우선예약
 		case KeyEvent.VK_F9:
 			playlist.bookFirstSong(topPanel.getInputNumber());
 			topPanel.inputNumber((char)KeyEvent.VK_CLEAR);
+			menuPanel.keyReleased(nKeyCode);
 			break;
 		// 예약취소
 		case KeyEvent.VK_DELETE:

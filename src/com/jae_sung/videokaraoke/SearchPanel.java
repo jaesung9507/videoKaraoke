@@ -193,6 +193,7 @@ public class SearchPanel extends JPanel implements KeyListener {
 		case KeyEvent.VK_ENTER:
 			Playlist.getInstance().bookFirstSong(getSelectedSongNum(), false);
 			m_frmFocusMaster.requestFocus();
+			TopPanel.getInstance().inputNumber((char)KeyEvent.VK_CLEAR);
 			m_frmFocusMaster.getKeyListeners()[0].keyReleased(e);
 			break;
 		case KeyEvent.VK_F8:
