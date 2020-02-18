@@ -65,6 +65,7 @@ https://www.youtube.com/watch?v=z-c-q88xrb0
 | 예약 | F8 |
 | 우선예약 | F9 |
 | 예약취소 | Delete |
+| 제목별/가수별 | Tab |
 | Playlist 내보내기 | Ctrl + S |  
   
 옵션을 넣어 실행하면 아래와 같은 정보를 얻을 수 있습니다.  
