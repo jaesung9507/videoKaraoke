@@ -219,7 +219,7 @@ public class VideoKaraoke {
 		// TODO Auto-generated method stub
 		if(args.length > 0) {
 			if(args[0].equals("-ver"))
-				System.out.println("VideoKaraoke version 0.0.3");
+				System.out.println("VideoKaraoke version 0.1.0");
 			else if(args[0].equals("-playlist"))
 				System.out.println(Playlist.getInstance());
 			else if(args[0].equals("-artist"))

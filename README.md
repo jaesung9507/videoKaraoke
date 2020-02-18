@@ -14,9 +14,9 @@
 | 이름 | 설명 |
 |--------|-------|
 | VideoKaraoke.jar | 실행파일 |
-| intro.mp4 | 시작한 노래가 없을 때 나오는 기본 동영상 파일 |
 | playlist.txt | 노래목록을 구성할 설정파일 |
 | setting.ini | 사용자 설정 파일 |
+| res | 리소스 디렉토리 |
 
 ## 사용방법
 먼저 구성파일은 모두 같은 폴더에 존재해야 합니다.  
@@ -55,12 +55,16 @@ https://www.youtube.com/watch?v=z-c-q88xrb0
 | 시작 | Enter |
 | 일시정지 | Space |
 | 취소 | Esc |
-| 예약 | Ctrl |
-| 우선예약 | Shift |
+| 메뉴 | F1 |
 | 반주 ▲ | F2 |
 | 반주 ▼ | F3 |
 | 템포 ▲ | F4 |
 | 템포 ▼ | F5 |
+| 박수 | F6 |
+| 선택 | F7 |
+| 예약 | F8 |
+| 우선예약 | F9 |
+| 예약취소 | Delete |
 | Playlist 내보내기 | Ctrl + S |  
   
 옵션을 넣어 실행하면 아래와 같은 정보를 얻을 수 있습니다.  
@@ -72,6 +76,7 @@ https://www.youtube.com/watch?v=z-c-q88xrb0
 | -artist singer | 가수명 : singer  수록곡 : 0곡 | 해당 가수 수록곡 수 |
 
 ## 배포
+[videoKaraoke-0.1.0-dist.zip](http://www.mediafire.com/file/g567nzri99pzifu/videoKaraoke-0.1.0-dist.zip/file)  
 [videoKaraoke-0.0.3-dist.zip](http://www.mediafire.com/file/txlcmd01un2ta28/videoKaraoke-0.0.3-dist.zip/file)  
 [videoKaraoke-0.0.2-dist.zip](http://www.mediafire.com/file/9qv14qk1lg2wx4y/videoKaraoke-0.0.2-dist.zip/file)  
 [videoKaraoke-0.0.1-dist.zip](https://www.mediafire.com/file/b1kmk8jkm1fjz90/videoKaraoke-0.0.1-dist.zip/file)

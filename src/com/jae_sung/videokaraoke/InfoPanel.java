@@ -37,6 +37,8 @@ public class InfoPanel extends JPanel {
 		String strResult = "<html><b>Contact</b><br>" +
 			"http://www.jae-sung.com<br>" +
 			"jaesung.lee9507@gmail.com<br><br>" +
+			"<b>Contributors</b><br>" +
+			"namjunwoo223 (Hangul Initial Search)<br><br>" +
 			"<b>Source Code</b><br>" +
 			"https://github.com/jaesung9507/videoKaraoke<br><br>" +
 			"VideoKaraoke is free software: you can redistribute it and/or modify<br>" + 
