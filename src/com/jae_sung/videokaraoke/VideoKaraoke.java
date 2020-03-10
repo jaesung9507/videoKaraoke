@@ -175,6 +175,10 @@ class Controller implements KeyListener, FocusListener {
 			if(menuPanel.getSelectedPanel() == menuPanel.PANEL_BOOKED)
 				menuPanel.keyReleased(nKeyCode);
 			break;
+		// 종료
+		case KeyEvent.VK_F12:
+			System.exit(0);
+			break;
 		case KeyEvent.VK_0:
 		case KeyEvent.VK_1:
 		case KeyEvent.VK_2:
@@ -219,7 +223,7 @@ public class VideoKaraoke {
 		// TODO Auto-generated method stub
 		if(args.length > 0) {
 			if(args[0].equals("-ver"))
-				System.out.println("VideoKaraoke version 0.1.0");
+				System.out.println("VideoKaraoke version 0.1.1");
 			else if(args[0].equals("-playlist"))
 				System.out.println(Playlist.getInstance());
 			else if(args[0].equals("-artist"))

@@ -117,6 +117,7 @@ public class SearchPanel extends JPanel implements KeyListener {
 				.replace("ㄼ", "ㄹㅂ").replace("ㄽ", "ㄹㅅ")
 				.replace("ㄾ", "ㄹㅌ").replace("ㄿ", "ㄹㅍ")
 				.replace("ㅀ", "ㄹㅎ").replace("ㅄ", "ㅂㅅ");
+		strKeyword = strKeyword.toUpperCase();
 		
 		if(m_bTitle)
 			m_listResult = Playlist.getInstance().searchTitle(strKeyword);
@@ -209,6 +210,9 @@ public class SearchPanel extends JPanel implements KeyListener {
 		case KeyEvent.VK_DOWN:
 			m_nCursor++;
 			cursorPrint();
+			break;
+		case KeyEvent.VK_F12:
+			System.exit(0);
 			break;
 		case KeyEvent.VK_TAB:
 			toggleCategory();

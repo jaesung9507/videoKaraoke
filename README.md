@@ -66,7 +66,8 @@ https://www.youtube.com/watch?v=z-c-q88xrb0
 | 우선예약 | F9 |
 | 예약취소 | Delete |
 | 제목별/가수별 | Tab |
-| Playlist 내보내기 | Ctrl + S |  
+| Playlist 내보내기 | Ctrl + S |
+| 종료 | F12 |  
   
 옵션을 넣어 실행하면 아래와 같은 정보를 얻을 수 있습니다.  
   
@@ -77,6 +78,7 @@ https://www.youtube.com/watch?v=z-c-q88xrb0
 | -artist singer | 가수명 : singer  수록곡 : 0곡 | 해당 가수 수록곡 수 |
 
 ## 배포
+[videoKaraoke-0.1.1-dist.zip](http://www.mediafire.com/file/0q0gpq681dqguzt/videoKaraoke-0.1.1-dist.zip/file)  
 [videoKaraoke-0.1.0-dist.zip](http://www.mediafire.com/file/g567nzri99pzifu/videoKaraoke-0.1.0-dist.zip/file)  
 [videoKaraoke-0.0.3-dist.zip](http://www.mediafire.com/file/txlcmd01un2ta28/videoKaraoke-0.0.3-dist.zip/file)  
 [videoKaraoke-0.0.2-dist.zip](http://www.mediafire.com/file/9qv14qk1lg2wx4y/videoKaraoke-0.0.2-dist.zip/file)  
